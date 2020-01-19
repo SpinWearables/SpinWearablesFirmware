@@ -6,7 +6,7 @@ import collections
 import os
 
 cppfilename = sys.argv[1]
-print(f"Parsing file {cppfilename}")
+print("Parsing file %s"%cppfilename)
 
 lines = open(cppfilename).readlines()
 
@@ -41,14 +41,14 @@ for k,g in itertools.groupby(lines, classify_line):
     clean_lines = [clean_line(k,l) for l in g]
     #if all([not c.strip() for c in clean_lines]):
     #    continue
-    output.append(f'<div class="{k}">\n')
+    output.append('<div class="%s">\n'%k)
     output.append(pres[k])
     output.append(''.join(clean_lines))
     output.append(posts[k])
     output.append('</div>\n')
 output.append('</div>')
 
-with open(f'{cppfilename}.md','w') as f:
+with open('%s.md'%cppfilename,'w') as f:
     f.writelines(output)
 
-os.system(f'pandoc -o {cppfilename}.html --css ./custom.css -s -f markdown+emoji --template pandoctemplate.html --mathjax {cppfilename}.md')
+os.system('pandoc -o %s.html --css ./custom.css -s -f markdown+emoji --template pandoctemplate.html --mathjax %s.md'%(cppfilename,cppfilename))
