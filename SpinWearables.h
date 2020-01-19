@@ -1,3 +1,7 @@
+/// # The SpinWheel firmware v0.0.1
+/// 
+///
+
 #include "Adafruit_NeoPixel.h"
 #include "ICM_20948.h"
 #include <math.h>
@@ -377,6 +381,11 @@ void compass() {
 }
 
 void tiltSensor2() {
+  uint8_t angle = (atan2(SpinWheel.ay_int, SpinWheel.ax_int)+3.1415/2)/2/3.1415*255;
+  SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
+}
+
+void tiltSensor3() {
   int8_t x = SpinWheel.ax_int;  
   int8_t y = SpinWheel.ay_int;
   SpinWheel.setLargeLEDsUniform(0xffffff);
@@ -396,7 +405,8 @@ void tiltSensor2() {
     SpinWheel.largeLEDs.setPixelColor(6,-y+8,0,-y+8);
     SpinWheel.largeLEDs.setPixelColor(2,-y+8,0,-y+8);
   }
-  SpinWheel.setSmallLEDsUniform(0xffffff);
+  uint8_t angle = (atan2(SpinWheel.ay_int, SpinWheel.ax_int)+3.1415/2)/2/3.1415*255;
+  SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
 void flashlight() {
