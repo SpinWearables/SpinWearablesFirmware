@@ -1,22 +1,60 @@
 /// # The SpinWheel firmware v0.0.1
-/// 
 ///
+/// This code is at the heart of all of our educational materials. It is what
+/// lets you write short programs of just a few lines and still make wonderful and
+/// beautiful patterns. If you have only recently started programming this code
+/// might look somewhat intimidating, hence consider starting with something
+/// simpler before delving in this much deeper pond.
+//
 
+// ## Libraries
+//
+// First we need to include a number of tools that are already provided
+// by other people and that will simplify our work quite a bit. Such tools
+// are usually called "software libraries".
+//--
+// The `NeoPixel` library from Adafruit provides the functions we will use to
+// talk to the large LEDs.
 #include "Adafruit_NeoPixel.h"
+// The `ICM_20948` library from Sparkfun provides the functions to talk to the
+// motion sensor.
 #include "ICM_20948.h"
+// And the `math` standard library gives us access to frequently used
+// mathematical functions (e.g. trigonometrics and exponents).
 #include <math.h>
 
+// Here the implementation of our own new library starts. We will call it
+// `SpinWearables`, after the name of our volunteer organization.
 namespace SpinWearables {
 
+// ## Constants
+// 
+// We will define a couple of convenient constants that will be used throughout
+// our code.
+//--
+// In many parts of the code we use a `byte` to represent a position on a
+// circle. One byte can contain any number between 0 and 255. Given that we have
+// 12 small LEDs, we would frequently want to know what one 12th of 255 is, i.e.
+// $\left\lfloor\frac{255}{12}\right\rfloor=21$, hence we put it here as a
+// easy-to-reuse constant.
 #define ONETWELFTH 21
+// The maximum number of animation routines the firmware permits (an arbitrary
+// limit, simply ensuring we do not reserve too much memory). See
+// `addAnimationRoutine` for details.
 #define MAXROUTINES 10
+// A parameter related to how many times we repeat a frame on the small LEDs.
+// This is the main source of delay in our code. See `drawSmallLEDFrame`.
 #define SMALLLEDTIMEDIV 1
+// Parameters for the smoothing filters we use in order to make the readings of
+// the motion sensor less jittery.
 #define FILTER_DIV 8
 #define FILTER_A 64
 #define FILTER_B ((1<<FILTER_DIV) - FILTER_A)
 
-// Profiling functions
-
+// ## Profiling functions
+// We use this function to measure how fast our code is. When you run it, it
+// tells you how many milliseconds have passes since the previous time it was
+// invoked.
 long executionTime() {
   static long t = millis();
   long r = millis()-t;
@@ -24,12 +62,24 @@ long executionTime() {
   return r;
 }
 
-// Drawing convenience functions
-
+// ## Drawing convenience functions
+// We have prepared a number of convenience functions to make drawing animations simpler.
+//--
+// #### Color encoding
+// Some of our code expects the value of a color to be provided as a 32-bit
+// word of which the bottom 24 bits (3 bytes) contain information about the red,
+// green, and blue components of the color. This function lets us turn 3 bytes,
+// one for each component into a single 32-bit word.
 uint32_t color(uint8_t r, uint8_t g, uint8_t b) {
   return (((uint32_t)r)<<16)+(((uint32_t)g)<<8)+b;  
 }
 
+// #### Color wheel
+// Frequently one needs to access the color (or hue) wheel. It is particularly
+// important when making rainbows for instance. This function takes a coordinate
+// on the circle (a single byte, 0 to 255, where 255 denotes a whole turn), and
+// turns it into the corresponding hue.
+// ![Depiction of the colorwheel.](./colorwheel.png)
 uint32_t colorWheel(uint8_t wheelPos) {
   wheelPos = 255 - wheelPos;
   if(wheelPos < 85) {
@@ -43,6 +93,10 @@ uint32_t colorWheel(uint8_t wheelPos) {
   return color(wheelPos * 3, 255 - wheelPos * 3, 0);
 }
 
+// #### Triangular wave
+// This function takes a number between 0 and 255 and provides a periodic
+// triangular pattern, particularly useful when one needs a pulsing brightness.
+// ![Depiction of the triangular wave.](./triangular_wave.png)
 uint8_t triangularWave(uint8_t x) {
   if (x>0x7f) {
     return (0xff-x)<<1;
@@ -51,14 +105,24 @@ uint8_t triangularWave(uint8_t x) {
   }
 }
 
+// #### Parabolic wave
+// Similarly to the triangular wave, this function is useful for periodically
+// pulsating patterns. However, the profile of this function resembles a beating
+// heart more closely and it can provide for more pleasing visuals.
+// ![Depiction of the parabolic wave.](./parabola_wave.png)
 uint8_t parabolaWave(uint8_t x) {
   uint8_t xm = x;
   if (xm>0x7f) {xm = 0xff-xm;}
-  return (xm*xm)>>7;
+  return (xm*xm)>>6;
 }
 
-// Temporal filter functions
-
+// ## Smoothing functions
+// With these tools various measurements can be made smoother, for more
+// easthetically pleasing look.
+//--
+// #### Fast-on slow-off filter
+// Using this function you can very rapidly respond to a new non-zero
+// measurement, but then slowly  decay back to zero if the signal ends.
 float faston_slowoff(float filtered_intensity, float current_intensity, float decay) {
   if (current_intensity > filtered_intensity) {
       return current_intensity;
@@ -67,9 +131,13 @@ float faston_slowoff(float filtered_intensity, float current_intensity, float de
   }
 }
 
-// Forward declaration for the interrupt dispatch (necessary as attachInterrupt does not provide for user data, so we are using a global function).
+// ## Forward declarations
+// Occasionally we need to use a function in the definition of another function, before we have had a chance to properly implement the first function. We list these functions here, in what is called a "forward declaration", in order to tell the computer to reserve space for them.
 void cycleAnimationRoutine();
 
+// ## The main `SpinWheel` class.
+// In the following "class" we encapsulate all of the functionality that works
+// directly with the SpinWheel hardware.
 class SpinWheelClass {
   public:
     SpinWheelClass() {
@@ -110,6 +178,7 @@ class SpinWheelClass {
       drawLargeLEDFrame();
     }
 
+// ### The functions pushing the current frame to the LEDs
     void drawFrame(unsigned long timeout) {
       unsigned long t = millis();
       drawLargeLEDFrame();
@@ -138,6 +207,7 @@ class SpinWheelClass {
       largeLEDs.show();  
     }
 
+// ### Talking to the motion sensor
     void readIMU() {
       if( IMU.dataReady() ){
         IMU.getAGMT();
@@ -172,6 +242,7 @@ class SpinWheelClass {
       }
     }
 
+// ### Animation routines
     void runAnimationRoutine() {
       if (registered_animations && current_animation < registered_animations && animationroutines[current_animation]!=0) {
         animationroutines[current_animation]();
@@ -185,6 +256,7 @@ class SpinWheelClass {
       }
     }
 
+// ### All of the functions used to draw to the upcoming frame
     void setSmallLEDsRainbow(uint8_t angle) {
       for (int i=0; i<12; i++) {
         setSmallLED(i, colorWheel(angle+i*ONETWELFTH));
@@ -255,7 +327,8 @@ class SpinWheelClass {
       setSmallLEDsUniform(0);  
       setLargeLEDsUniform(0);      
     }
-        
+
+// ### Some slightly more advanced drawing functions
     void setSmallLEDsPointer(uint8_t angle, int64_t decay, uint8_t r, uint8_t g, uint8_t b) {
       for (int i=0; i<12; i++) {
         uint8_t rel = angle-i*ONETWELFTH;
@@ -300,7 +373,8 @@ void cycleAnimationRoutine() { // called from interrupt
   last_interrupt_time = interrupt_time;
 }
 
-// Preloaded animations
+// ## Preloaded animations
+// The SpinWheel comes with a number of preloaded animation routines.
 
 void bootAnimation() {
   for (uint8_t i=0; i<252; i+=4) {
@@ -324,11 +398,16 @@ void bootAnimation() {
   SpinWheel.drawFrame();
 }
 
+// #### Rotating
+// A rotating pattern on the small LEDs.
+// <video src="./preloaded_rotating.mp4" muted="" autoplay="" playsinline="" loop=""></video>
 void smallWhiteRotating() {
   uint8_t angle = (millis()>>4)&0xff;
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
+// #### Breathing
+// A pulsing pattern on all of the LEDs.
 void allBreathing() {
   uint8_t t = (millis()>>4)&0xff;
   uint8_t b1 = parabolaWave(t);
@@ -350,6 +429,10 @@ void allBreathing() {
   }
 }
 
+
+// #### Tilt sensor 1
+// The large LEDs are used as a tilt sensor.
+// <video src="./preloaded_tilt.mp4" muted="" autoplay="" playsinline="" loop=""></video>
 void tiltSensor() {
   int8_t x = SpinWheel.ax_int;  
   int8_t y = SpinWheel.ay_int;
@@ -360,6 +443,8 @@ void tiltSensor() {
   else SpinWheel.largeLEDs.setPixelColor(6,-y,0,-y);
 }
 
+// #### Compass
+// A compass on the small LEDs, while the large LEDs are used as a tilt sensor.
 void compass() {
   int8_t x = SpinWheel.ax_int;  
   int8_t y = SpinWheel.ay_int;
@@ -380,11 +465,16 @@ void compass() {
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
+// #### Tilt sensor 2
+// The small LEDs are used as a tilt sensor.
 void tiltSensor2() {
   uint8_t angle = (atan2(SpinWheel.ay_int, SpinWheel.ax_int)+3.1415/2)/2/3.1415*255;
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
+// #### Tilt sensor 3
+// Both the large and the small LEDs are used as a tilt sensor.
+// <video src="./preloaded_tilt3.mp4" muted="" autoplay="" playsinline="" loop=""></video>
 void tiltSensor3() {
   int8_t x = SpinWheel.ax_int;  
   int8_t y = SpinWheel.ay_int;
@@ -409,11 +499,16 @@ void tiltSensor3() {
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
+// #### Flashlight
+// As the name suggests, this function turns all LEDs on to full brightness.
 void flashlight() {
   SpinWheel.setSmallLEDsUniform(0xffffff);  
   SpinWheel.largeLEDs.fill(0xffffff, 0, 8);
 }
 
+// #### Large Rainbow
+// Draw a rainbow on the larger LEDs and while the smaller ones are all white.
+// <video src="./preloaded_rainbow.mp4" muted="" autoplay="" playsinline="" loop=""></video>
 void largeRainbow() {
   long int angle = millis()/20;
   SpinWheel.setSmallLEDsUniform(0xffffff);
@@ -421,6 +516,9 @@ void largeRainbow() {
     SpinWheel.setLargeLED(i, colorWheel(angle+i*255/4));
     SpinWheel.setLargeLED(7-i, colorWheel(angle+i*255/4));
   }
+
+
+//
 }
 
 } // end namespace SpinWearables

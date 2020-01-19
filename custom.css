@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,500&display=swap');
+
+:root {
+  --color-text: #303E44;
+  --color-license: #dbdbdb;
+  --color-licensebg: #324158;
+  font-size: 18px;
+  color: var(--color-text);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  --font-weight-default: 300;
+  --font-weight-strong: 500;
+}
+
+strong {font-weight: var(--font-weight-strong);}
+em {font-weight: var(--font-weight-strong);}
+
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+code{white-space: pre-wrap;}
+
+input {
+  font-size: 1em;
+}
+
+
+body {
+  margin: 0;
+}
+
+h1,h2,h3 {
+  line-height: 1.2;
+  margin: 3rem auto;
+}
+
+a {
+  color: inherit;
+  text-decoration-style: solid;
+}
+
+
+#license {
+  font-size: 0.7em;
+  background-color: var(--color-licensebg);
+  color: var(--color-license);
+}
+
+#license a {
+  color: var(--color-license);
+}
+
+#license img {
+  max-height: 0.8em;
+}
+

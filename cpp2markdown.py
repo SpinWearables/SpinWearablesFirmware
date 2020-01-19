@@ -13,6 +13,8 @@ lines = open(cppfilename).readlines()
 def classify_line(line):
     if line.startswith('///'):
         return 'wide-text'
+    elif line.startswith('//--'):
+        return 'code placeholder'
     elif line.startswith('//'):
         return 'side-text' 
     else:
@@ -23,6 +25,8 @@ def clean_line(lineclass,line):
         return line[4:]
     elif lineclass=='side-text':
         return line[3:]
+    elif lineclass=='code placeholder':
+        return ''
     elif lineclass=='code':
         return line
 
@@ -32,14 +36,19 @@ posts = collections.defaultdict(lambda :'')
 posts['code'] = '```\n'
 
 output = []
+output.append('<div class="flex-container">')
 for k,g in itertools.groupby(lines, classify_line):
+    clean_lines = [clean_line(k,l) for l in g]
+    #if all([not c.strip() for c in clean_lines]):
+    #    continue
     output.append(f'<div class="{k}">\n')
     output.append(pres[k])
-    output.append(''.join(map(lambda l: clean_line(k,l), g)))
+    output.append(''.join(clean_lines))
     output.append(posts[k])
     output.append('</div>\n')
+output.append('</div>')
 
 with open(f'{cppfilename}.md','w') as f:
     f.writelines(output)
 
-os.system(f'pandoc -o {cppfilename}.html --css /custom.css --css /custom_book.css -s -f markdown+emoji --template pandoctemplate.html --mathjax {cppfilename}.md')
+os.system(f'pandoc -o {cppfilename}.html --css ./custom.css -s -f markdown+emoji --template pandoctemplate.html --mathjax {cppfilename}.md')
