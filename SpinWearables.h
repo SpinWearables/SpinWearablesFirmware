@@ -140,58 +140,87 @@ void cycleAnimationRoutine();
 // directly with the SpinWheel hardware.
 class SpinWheelClass {
   public:
+// ### The constructor
+// This is the "constructor" for our `SpinWheel` object. It ensure that any
+// prerequisite objects are created before we initialize the main object.
     SpinWheelClass() {
       largeLEDs = Adafruit_NeoPixel(8, 15, NEO_GRB + NEO_KHZ800); // XXX HARDWARE DETAIL: 8 LEDs on pin d15.
     };
 
+// ### The hardware initialization function
+// The `begin` function is called when we are ready to start talking to all of the SpinWheel hardware, usually in `setup()`.
     void begin(bool button=true) {
+// Initialize all of the pins we use to drive the grid of small LEDs.
       PORTB &= B00000011;
       PORTD |= B11111100;
       DDRB |= B11111100;
       DDRD |= B11111100;
+// Ensure that the large LEDs, controlled by the Adafruit NeoPixel library are also ready.
       largeLEDs.begin(); 
       largeLEDs.show();
+// Prepare the hardware necessary for talking to the motion sensor.
       Wire.begin();
       Wire.setClock(400000);
       IMU.begin(Wire, 1); // XXX HARDWARE DETAIL; AD0 is pulled.
       // TODO check that the IMU works.
+// If instructed, ensure that the button press is set to run a small routine
+// that changes the current animation.
       if (button) {
         digitalWrite(7, INPUT_PULLUP); // XXX HARDWARE DETAIL: Pin D7 is connected to the button.
         attachInterrupt(digitalPinToInterrupt(7), cycleAnimationRoutine, FALLING);
       }
     }
 
+// ### We store the current state of the LEDs in these objects.
     uint8_t smallLEDs[36];
     Adafruit_NeoPixel largeLEDs;
     
+// ### We store various motion sensor readings in these variables.
     ICM_20948_I2C IMU;
     float ax, ay, az, gx, gy, gz, mx, my, mz;
     int8_t ax_int, ay_int, az_int, gx_int, gy_int, gz_int, mx_int, my_int, mz_int;
     int32_t taxsmooth, taysmooth, tazsmooth, tgxsmooth, tgysmooth, tgzsmooth, tmxsmooth, tmysmooth, tmzsmooth;
 
+// ### And the list of animations and the currently running animation is tored here.
     void (*animationroutines[MAXROUTINES]) (void);
     size_t current_animation = 0;
     size_t registered_animations = 0;
     
+// ### The functions pushing the current frame to the LEDs.
+// It does so by running two subroutines, one for each set of LEDs.
     void drawFrame() {
       drawSmallLEDFrame();
       drawLargeLEDFrame();
     }
 
-// ### The functions pushing the current frame to the LEDs
+// The same function can be called with a timeout, ensuring that the hardware
+// repeatedly redraws the image, and does nothing else for the duration of the
+// timeout.
     void drawFrame(unsigned long timeout) {
       unsigned long t = millis();
       drawLargeLEDFrame();
       while(millis()-t<timeout) {drawSmallLEDFrame();}
     }
 
+// #### The drawing function responsible for the small LEDs.
+// This function employs persistence of vision: only a few LEDs flash at the
+// same time, but in a rapid succession we loop through all of them, ensuring that
+// to the human eye all of them seem on. We modulate the intensity of each
+// color by turning it on for different durations.
     void drawSmallLEDFrame() { // XXX HARDWARE DETAIL: B2-B7 and D2-D7 make up the small LEDs grid.
+// This loop specifies how many time we cycle through each LED before we exit
+// the functions. We want to do it more times in order to have more vivid colors,
+// but not too many times as to have this function take too long.
       for(int frame=0; frame<2<<SMALLLEDTIMEDIV; frame++) { // XXX: 2 repetitions lead to drawSmallLEDFrame taking 0.021 seconds.
+// And the following two loops go through each row and column of the small LED
+// grid in order to address them efficiently.
         for(int i=0; i<6; i++) {
           PORTB &= B00000011;
           PORTB |= B00000100 << i;
           for(int j=0; j<6; j++) {
             uint8_t d = smallLEDs[i*6+j];
+// On the delays in this inner loop depends how bright the color will be. A
+// longer delay during for a turned-on LED implies a brighter color.
             if (d) {
               PORTD ^= B00000100 << j;
               delayMicroseconds(d>>SMALLLEDTIMEDIV);
@@ -203,14 +232,24 @@ class SpinWheelClass {
       }
     }
 
+// #### The drawing function for the large LEDs
+// It simply calls into the Adafruit NeoPixel library.
     void drawLargeLEDFrame() {
       largeLEDs.show();  
     }
 
 // ### Talking to the motion sensor
     void readIMU() {
+// Check that the sensor is ready, and read the current acceleration (A),
+// rotation (G for gyroscope), magnetism (M), and temperature (T) data.
       if( IMU.dataReady() ){
         IMU.getAGMT();
+// First smooth out the measurements using an exponential averaging filter.
+// Each new value is used to slowly update the filtered value, through the formula
+// $$x_\text{filtered}=\alpha\times x_\text{newest reading} + (1-\alpha)\times
+// x_\text{old value},$$ where $\alpha$ is between 0 and 1. If $\alpha$ is large we
+// rapidly follow the sensor readings, but if it is small, only a smooth filtered
+// signal is preserved.
         taxsmooth = (((int32_t)IMU.agmt.acc.axes.x)*FILTER_A + taxsmooth*FILTER_B)>>FILTER_DIV;
         taysmooth = (((int32_t)IMU.agmt.acc.axes.y)*FILTER_A + taysmooth*FILTER_B)>>FILTER_DIV;
         tazsmooth = (((int32_t)IMU.agmt.acc.axes.z)*FILTER_A + tazsmooth*FILTER_B)>>FILTER_DIV;
