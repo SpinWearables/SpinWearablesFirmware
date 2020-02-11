@@ -1,5 +1,7 @@
 *.h.html
+*.ino.html
 *.h.md
+*.ino.md
 *.cpp.html
 *.cpp.md
 *.swp
