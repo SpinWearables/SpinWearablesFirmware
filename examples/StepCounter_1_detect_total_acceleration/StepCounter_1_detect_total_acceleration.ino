@@ -1,3 +1,6 @@
+/// # Step Counter: Step 1, read the motion sensor
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 

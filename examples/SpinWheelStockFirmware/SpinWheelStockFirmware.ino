@@ -1,3 +1,9 @@
+/// # The Default SpinWheel firmware.
+///
+/// This includes a few preloaded animations that can be changed by pressing
+/// the button.
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 

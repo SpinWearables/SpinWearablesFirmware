@@ -1,3 +1,8 @@
+/// # Biology of Sight: Persistence of Vision
+/// Rapidly switch between two colors and observe how the human eye can be too
+/// slow to distinguish them.
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 

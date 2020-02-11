@@ -1,3 +1,9 @@
+/// # Step Counter, Complete
+/// We use a slightly fancier light-up pattern, where we rapidly brighten the
+/// LEDs in the presence of motion and only slowly dim them to darkness when at
+/// rest.
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 

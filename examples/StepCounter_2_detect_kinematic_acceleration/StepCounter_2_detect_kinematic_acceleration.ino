@@ -1,3 +1,6 @@
+/// # Step Counter: Step 2, detect only acceleration due to motion
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 

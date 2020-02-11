@@ -1,3 +1,6 @@
+/// # Step Counter: Step 3, lighting up in response to motion
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 

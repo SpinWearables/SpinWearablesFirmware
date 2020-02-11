@@ -1,3 +1,7 @@
+/// # Biology of Sight: Mixing Colors
+/// Turning all of the large LEDs to a custom color.
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 

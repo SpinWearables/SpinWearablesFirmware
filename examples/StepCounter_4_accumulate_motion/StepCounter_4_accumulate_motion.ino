@@ -1,3 +1,6 @@
+/// # Step Counter: Step 4, accumulate motion measurements
+//
+
 #include "SpinWearables.h"
 using namespace SpinWearables;
 
