@@ -26,6 +26,6 @@ void loop() {
   SpinWheel.setLargeLEDsUniform(intensity, intensity, intensity);
   // And we tell the SpinWheel to show the light pattern we registered on the previous line.
   SpinWheel.drawFrame();
-  Serial.print(20*kinematic_acceleration);
+  Serial.print(intensity);
   Serial.println();
 }
