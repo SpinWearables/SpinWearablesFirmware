@@ -59,6 +59,12 @@ long executionTime() {
   static long t = millis();
   long r = millis()-t;
   t = millis();
+}
+
+long executionTimeMicros() {
+  static long t = micros();
+  long r = micros()-t;
+  t = micros();
   return r;
 }
 
@@ -169,6 +175,8 @@ class SpinWheelClass {
         digitalWrite(7, INPUT_PULLUP); // XXX HARDWARE DETAIL: Pin D7 is connected to the button.
         attachInterrupt(digitalPinToInterrupt(7), cycleAnimationRoutine, FALLING);
       }
+      clearAllLEDs();
+      drawFrame();
     }
 
 // ### We store the current state of the LEDs in these objects.
