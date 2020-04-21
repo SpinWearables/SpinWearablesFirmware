@@ -189,7 +189,7 @@ class SpinWheelClass {
     int8_t ax_int, ay_int, az_int, gx_int, gy_int, gz_int, mx_int, my_int, mz_int;
     int32_t taxsmooth, taysmooth, tazsmooth, tgxsmooth, tgysmooth, tgzsmooth, tmxsmooth, tmysmooth, tmzsmooth;
 
-// ### And the list of animations and the currently running animation is tored here.
+// ### And the list of animations and the currently running animation is stored here.
     void (*animationroutines[MAXROUTINES]) (void);
     size_t current_animation = 0;
     size_t registered_animations = 0;
