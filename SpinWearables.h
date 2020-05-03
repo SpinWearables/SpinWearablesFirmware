@@ -550,7 +550,15 @@ void tiltSensor3() {
 // As the name suggests, this function turns all LEDs on to full brightness.
 void flashlight() {
   SpinWheel.setSmallLEDsUniform(0xffffff);  
-  SpinWheel.largeLEDs.fill(0xffffff, 0, 8);
+  SpinWheel.setLargeLEDsUniform(0xffffff);
+}
+
+
+// #### Teal Light
+// As the name suggests, this function turns all LEDs on to full brightness.
+void tealLight() {
+  SpinWheel.setSmallLEDsUniform(0, 255, 170);  
+  SpinWheel.setLargeLEDsUniform(0, 255, 216);
 }
 
 // #### Large Rainbow
