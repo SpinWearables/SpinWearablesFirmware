@@ -176,6 +176,7 @@ class SpinWheelClass {
         attachInterrupt(digitalPinToInterrupt(7), cycleAnimationRoutine, FALLING);
       }
       clearAllLEDs();
+      setBrightness(20);
       drawFrame();
     }
 
@@ -304,6 +305,10 @@ class SpinWheelClass {
     }
 
 // ### All of the functions used to draw to the upcoming frame
+    void setBrightness(uint8_t b) {
+      SpinWheel.largeLEDs.setBrightness(b);
+    }
+
     void setSmallLEDsRainbow(uint8_t angle) {
       for (int i=0; i<12; i++) {
         setSmallLED(i, colorWheel(angle+i*ONETWELFTH));
