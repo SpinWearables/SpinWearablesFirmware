@@ -306,7 +306,7 @@ class SpinWheelClass {
 
 // ### All of the functions used to draw to the upcoming frame
     void setBrightness(uint8_t b) {
-      SpinWheel.largeLEDs.setBrightness(b);
+      largeLEDs.setBrightness(b);
     }
 
     void setSmallLEDsRainbow(uint8_t angle) {
