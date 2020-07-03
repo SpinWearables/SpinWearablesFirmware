@@ -51,4 +51,4 @@ output.append('</div>')
 with open('%s.md'%cppfilename,'w') as f:
     f.writelines(output)
 
-os.system('pandoc -o %s.html --css ./custom.css -s -f markdown+emoji --template pandoctemplate.html --mathjax %s.md'%(cppfilename,cppfilename))
+os.system('pandoc -o %s.html --css "/custom.css" -s -f markdown+emoji --template pandoctemplate.html --mathjax %s.md'%(cppfilename,cppfilename))
