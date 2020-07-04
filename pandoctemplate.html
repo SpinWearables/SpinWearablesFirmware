@@ -42,15 +42,22 @@ h1, h2, h3 {
   max-width: 1400px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .wide-text {
   flex: 0 1 900px;
   margin: auto;
 }
-.side-text {
-  flex: 0 1 40%;
+.side-text, .code {
+  flex: 0 0 40%;
   padding: 0 1em;
   overflow-x: scroll;
+  scrollbar-width: thin;
+}
+@media all and (max-width: 900px) {
+.flex-container > * {
+  flex: 1 0 100%;
+}
 }
 img {
   max-width: 100%;
@@ -64,10 +71,10 @@ video {
   display: block;
 }
 .code {
-  flex: 1 0 40%;
   background-color: rgba(116, 116, 116, 0.40);
-  padding: 0 1em;
-  max-width: 50%;
+}
+.code > .sourceCode {
+  overflow: unset;
 }
 </style>
 </head>
