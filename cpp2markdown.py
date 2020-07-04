@@ -51,4 +51,7 @@ output.append('</div>')
 with open('%s.md'%cppfilename,'w') as f:
     f.writelines(output)
 
-os.system('pandoc -o %s.html --css "/custom.css" -M fileloc="./%s" -s -f markdown+emoji --template pandoctemplate.html --mathjax %s.md'%(cppfilename,cppfilename.split('/')[-1],cppfilename))
+if len(cppfilename.split('/'))>2:
+    os.system('pandoc -o %s.html --css "/custom.css" -M fileloc="./%s" -M filelocfull="%s" -s -f markdown+emoji --template pandoctemplate.html --mathjax %s.md'%(cppfilename,cppfilename.split('/')[-1],' → '.join(cppfilename.split('/')[1:-1]),cppfilename))
+else:
+    os.system('pandoc -o %s.html --css "/custom.css" -s -f markdown+emoji --template pandoctemplate.html --mathjax %s.md'%(cppfilename,cppfilename))
