@@ -16,7 +16,6 @@ uint8_t angle;
 
 void loop() {
   SpinWheel.readIMU();
-  // figure out how to get smoother color wheel so doesn't change when switch direction
   // if rotation is fast, add a step to the offset
   if (abs(SpinWheel.gx) > 1) {
     offset = SpinWheel.gx*100; 
