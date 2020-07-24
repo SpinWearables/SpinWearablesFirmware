@@ -17,16 +17,15 @@ void loop() {
   
   SpinWheel.readIMU();
   // If the x rotation (gx) is big enough, then 
-  // change the color of the big LEDs based on the
-  // direction of the spin
+  // change the color of the big LEDs
   if (abs(SpinWheel.gx) > 1) {
     spinning = 255;
   }
 
-  // If gz is positive, set the big LEDs to light up green
-  // If gz is negative, set the big LEDs to light up blue
   SpinWheel.setLargeLEDsUniform(0, spinning, spinning);
   // Make the SpinWheel show the registered color.
+  // If spinning fast enough, the LEDs  will be set to (0, 255, 255).
+  // This is a light blue color
   SpinWheel.drawFrame();
  }
   
