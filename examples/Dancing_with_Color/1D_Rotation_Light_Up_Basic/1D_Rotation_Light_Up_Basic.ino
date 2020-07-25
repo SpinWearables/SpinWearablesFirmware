@@ -13,7 +13,9 @@ using namespace SpinWearables;
 void setup() {
   SpinWheel.begin();
 }
-
+//
+//
+//
 // Insturctions in a loop function are repeated over and over again, 
 // in other words, "in a loop".
 void loop() {
