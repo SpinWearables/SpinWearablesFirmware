@@ -11,7 +11,6 @@ using namespace SpinWearables;
 // once when the SpinWheel device powers on. We run one single instruction
 // called `SpinWheel.begin()` which prepares all the LEDs to accept new colors.
 void setup() {
-  // Initialize all of the hardware on the SpinWheel.
   SpinWheel.begin();
 }
 
