@@ -1,5 +1,6 @@
 /// # Dancing with Color: Step x, changing color in response to rotation in the z-direction.
 
+//
 // You've probably seen these `include` statements in some of the other code examples. 
 // They allow the program to access a set of tools for the SpinWheel for us to use. 
 
@@ -51,3 +52,4 @@ void loop() {
   SpinWheel.drawFrame();
  }
   
+//
