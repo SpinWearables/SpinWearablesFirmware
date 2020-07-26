@@ -40,9 +40,14 @@ void loop() {
 // We store this time in `t_repeating`.
   int t_repeating = t % 2500;
 // `t_repeating` will now smoothly go from 0 to 2500,
-// and then repeat. We want to turn this number into a brightness,
-// but 
+// and then repeat. We want to turn this number into a brightness
+// for each color, but the SpinWheel does not permit color
+// settings higher than 255. Thus we divide `t_repeating` by 10
+// and store the result in the variable `b`.
   int b = t_repeating / 10;
+// Finally, we use the `setLargeLEDsUniform` function, which
+// takes three numbers (a red, a green, and a blue intensity)
+// and sets all of the large LEDs uniformly to the given color.
   SpinWheel.setLargeLEDsUniform(b, b, b);
   SpinWheel.drawFrame();
 }
