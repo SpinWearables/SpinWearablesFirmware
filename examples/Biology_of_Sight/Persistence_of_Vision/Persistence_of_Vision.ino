@@ -1,6 +1,8 @@
 /// # Biology of Sight: Persistence of Vision
 /// Rapidly switch between two colors and observe how the human eye can be too
 /// slow to distinguish them.
+///
+/// **BE CAREFUL IF YOU HAVE EPILEPSY AS THIS WILL CAUSE FLASHING COLORS!!!**
 //
 
 #include "SpinWearables.h"
