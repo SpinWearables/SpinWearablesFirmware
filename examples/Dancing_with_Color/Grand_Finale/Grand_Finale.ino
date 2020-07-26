@@ -30,10 +30,11 @@ void loop() {
     SpinWheel.setLargeLED(7-i, colorWheel(colorChange));
   }
 
-
+  float total_acceleration = SpinWheel.ax + SpinWheel.ay + SpinWheel.az
+  
   // make a snake in the small LEDs
-  // if there is sufficient rotation, have the snake rotate
-  if (abs(SpinWheel.gx) > 1) { 
+  // if there is sufficient motion, have the snake move
+  if (abs(total_acceleration) > 1) { 
     angle = (millis()>>4)&0xff;    
   }
 
