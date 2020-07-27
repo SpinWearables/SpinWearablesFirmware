@@ -29,7 +29,7 @@ int red = 0;
 int green = 0;
 int blue = 0;
 
-// Insturctions in a loop function are repeated over and over again,
+// Instructions in a loop function are repeated over and over again,
 // in other words, "in a loop".
 void loop() {
 
