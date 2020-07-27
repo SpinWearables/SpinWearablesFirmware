@@ -1,9 +1,12 @@
 /// # Dancing with Color: Step x, changing color in response to rotation in the z-direction.
-
+///
+/// Here we go through in detail how to change the color of the SpinWheel in 
+/// response to the rotation of the device. For more information and other 
+/// examples, [click here](https://spinwearables.com/dancing/).
 //
+
 // You've probably seen these `include` statements in some of the other code examples. 
 // They allow the program to access a set of tools for the SpinWheel for us to use. 
-
 #include "SpinWearables.h"
 using namespace SpinWearables;
 
@@ -13,9 +16,7 @@ using namespace SpinWearables;
 void setup() {
   SpinWheel.begin();
 }
-//
-//
-//
+
 // Insturctions in a loop function are repeated over and over again, 
 // in other words, "in a loop".
 void loop() {
@@ -26,7 +27,7 @@ void loop() {
 // motion of the SpinWheel itself. 
   int spinning = 0;
  
-// 
+
 // The `readIMU` function checks if the sensor is ready
 // and takes its current rotation data, which we will
 // use below to change the color.  
@@ -53,4 +54,4 @@ void loop() {
   SpinWheel.drawFrame();
  }
   
-//
+
