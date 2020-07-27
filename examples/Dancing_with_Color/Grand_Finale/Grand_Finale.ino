@@ -1,10 +1,21 @@
-/// # Dancing with Color: Step x, have the color wheel change only 
-// if there is rotation
+/// # Dancing with Color: Have the SpinWheel respond to both acceleration and rotation. 
+///
+/// Here we include one final code example. This example is designed
+/// to be more complex than the previous examples and to inspire
+/// future work. For more information and other examples, 
+/// [click here](https://spinwearables.com/dancing/).
 //
 
+// These include statements should look familiar!
+// As a reminder, they allow the program to access
+// coding tools for the SpinWheel.
 #include "SpinWearables.h"
 using namespace SpinWearables;
 
+// The setup function should also seem familiar.
+// As a reminder, the `setup` function is run once when
+// the SpinWheel turns on. Also, `SpinWheel.begin()`
+// prepares the LED to accept new colors.
 void setup() {
   SpinWheel.begin();
 }
@@ -14,7 +25,11 @@ int colorChange;
 
 uint8_t angle;
 
+// Instructions in a loop function are repeated over and over again,
+// in other words, "in a loop".
 void loop() {
+// The `readIMU` function checks if the sensor is ready
+// and takes its current rotation data.
   SpinWheel.readIMU();
   // if rotation is fast, add a step to the offset
   if (abs(SpinWheel.gx) > 1) {
