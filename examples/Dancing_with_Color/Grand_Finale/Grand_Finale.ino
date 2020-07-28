@@ -20,10 +20,9 @@ void setup() {
   SpinWheel.begin();
 }
 
+
 int offset = 0;
 int colorChange;
-
-uint8_t angle;
 
 // Instructions in a loop function are repeated over and over again,
 // in other words, "in a loop".
@@ -31,13 +30,21 @@ void loop() {
 // The `readIMU` function checks if the sensor is ready
 // and takes its current rotation data.
   SpinWheel.readIMU();
-  // if rotation is fast, add a step to the offset
+// Here, we use an **if statement** to check if 
+// the rotation is fast. If this is true, then add 
+// a step to the offset.
   if (abs(SpinWheel.gx) > 1) {
     offset = SpinWheel.gx*100; 
     Serial.println(offset);
   }
 
-  // make the rainbow in the large LEDs
+// Here we will use a **for loop**. Similar to the 
+// `loop` function, instructions inside the for loop
+// repeat. In this case the insturctions inside the 
+// for loop will repeat four times as specified by the 
+// `i < 4`. This will make a rainbow in the large LEDs
+// with a color change specified by the movement of the 
+// device. 
   for (int i=0; i<4; i++) {
     colorChange = offset+i*255/4;
     Serial.println(colorChange);
@@ -45,16 +52,19 @@ void loop() {
     SpinWheel.setLargeLED(7-i, colorWheel(colorChange));
   }
 
+// Here we define the total acceleration as the 
+// sum of the acceleration in the x,y,and z directions.
   float total_acceleration = SpinWheel.ax + SpinWheel.ay + SpinWheel.az
   
-  // make a snake in the small LEDs
-  // if there is sufficient motion, have the snake move
+// Here we use an **if statement** to check to see if the 
+// the total acceleration is large enough. If it is, 
+// then we will create a snake on the small LEDs using
+// `SpinWheel.snake()`. 
   if (abs(total_acceleration) > 1) { 
-    angle = (millis()>>4)&0xff;    
+     SpinWheel.snake();
   }
 
-  // this is a function that we created to display a "snake"
-  SpinWheel.setSmallLEDsPointer(angle, 500, 0, 255, 255);
+
 
   SpinWheel.drawFrame();
 }
