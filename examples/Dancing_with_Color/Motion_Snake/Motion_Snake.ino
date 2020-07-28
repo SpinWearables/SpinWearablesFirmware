@@ -1,29 +1,35 @@
-/// # Dancing with Color: Step x, colorful snake that changes with
-// motion
+/// # Dancing with Color: Create colorful snake that changes with rotation.
 //
 
+// These include statements should look familiar!
+// As a reminder, they allow the program to access
+// coding tools for the SpinWheel.
 #include "SpinWearables.h"
 using namespace SpinWearables;
 
+// The setup function should also seem familiar.
+// As a reminder, the `setup` function is run once when
+// the SpinWheel turns on. Also, `SpinWheel.begin()`
+// prepares the LED to accept new colors.
 void setup() {
-  // Initialize all of the hardware on the SpinWheel.
   SpinWheel.begin();
 }
 
-uint8_t angle; 
-
+// Instructions in a loop function are repeated over and over again,
+// in other words, "in a loop".
 void loop() {
+// The `readIMU` function checks if the sensor is ready
+// and takes its current rotation data.
   SpinWheel.readIMU();
 
-  // if there is sufficient rotation, have the snake rotate
+// Use an **if statement** to check to see if the rotation is
+// large enough. If the rotation is large enough, then 
+// `SpinWheel.snake()` creates a snake-like pattern 
+// on the device.
   if (abs(SpinWheel.gx) > 1) { 
-    angle = (millis()>>4)&0xff;    
+     SpinWheel.snake();
   }
 
-  // this is a function that we created to display a "snake"
-  SpinWheel.setSmallLEDsPointer(angle, 500, 0, 255, 255);
-    
- 
   
   SpinWheel.setLargeLEDsUniform(100, 0, 0);
 
