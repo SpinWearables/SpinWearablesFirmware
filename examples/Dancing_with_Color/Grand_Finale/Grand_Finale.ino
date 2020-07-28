@@ -54,7 +54,7 @@ void loop() {
 
 // Here we define the total acceleration as the 
 // sum of the acceleration in the x,y,and z directions.
-  float total_acceleration = SpinWheel.ax + SpinWheel.ay + SpinWheel.az
+  float total_acceleration = SpinWheel.ax + SpinWheel.ay + SpinWheel.az;
   
 // Here we use an **if statement** to check to see if the 
 // the total acceleration is large enough. If it is, 
