@@ -59,9 +59,10 @@ void loop() {
 // Here we use an **if statement** to check to see if the 
 // the total acceleration is large enough. If it is, 
 // then we will create a snake on the small LEDs using
-// `SpinWheel.snake()`. 
+// `SpinWheel.snake()`. Here we use (0,255,0) to make the 
+// snake green, but you can use any color you like! 
   if (abs(total_acceleration) > 1) { 
-     SpinWheel.snake();
+     SpinWheel.snake(0,255,0);
   }
 
 
