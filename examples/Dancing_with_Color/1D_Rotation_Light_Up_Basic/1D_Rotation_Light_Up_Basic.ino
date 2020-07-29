@@ -25,7 +25,7 @@ void loop() {
 // a number that tells the SpinWheel what color to display. . 
 // In the code below we will choose this color based on the 
 // motion of the SpinWheel itself. 
-  int spinning = 0;
+  
  
 
 // The `readIMU` function checks if the sensor is ready
@@ -43,15 +43,19 @@ void loop() {
 // makes it so that the direction of the rotation
 // (clockwise or counter clockwise), does not matter. 
   if (abs(SpinWheel.gx) > 1) {
-    spinning = 255;
-  }
-
 // As before, the `setLargeLEDsUniform` function tells the 
 // SpinWheel to show the color we would like it to show. 
-// In this case, if the SpinWheel is spinning, we will use
-// (0,255,255), which is a light blue. 
-  SpinWheel.setLargeLEDsUniform(0, spinning, spinning);
+// We will use (0,255,255), which is a light blue.
+    SpinWheel.setLargeLEDsUniform(0, 255, 255);
+  }
+  else {
+// Since no motion has been detected, we will instead use 
+// We will use (0,0,0), which turns off the LEDs.
+    SpinWheel.setLargeLEDsUniform(0, 0, 0);
+  }
+
+// Finally, we need to tell the SpinWheel to light up the LEDs
+// according to the instructions in `setLargeLEDsUniform`.
   SpinWheel.drawFrame();
  }
   
-
