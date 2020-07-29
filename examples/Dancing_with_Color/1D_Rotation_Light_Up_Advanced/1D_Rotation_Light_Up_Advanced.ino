@@ -45,7 +45,7 @@ void loop() {
 // the **positive direction**. If this condition is true
 // we will light up the LEDs according to the given
 // instruction. 
-  if (abs(SpinWheel.gx) > 1) {
+  if (SpinWheel.gx > 1) {
     pos_spin = 255;
     neg_spin = 0;
   }
