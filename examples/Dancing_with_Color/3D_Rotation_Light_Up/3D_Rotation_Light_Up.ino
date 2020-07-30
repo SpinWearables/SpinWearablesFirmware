@@ -37,6 +37,12 @@ void loop() {
 // and takes its current rotation data.
   SpinWheel.readIMU();
 
+// Set the colors to zero. Below we will measure rotations
+// and change the values away from zero if necessary. 
+  red = 0;
+  green = 0;
+  blue = 0;
+
 // Here we will also use if statements. 
 // In this case if the rotation in the 
 // **x direction** is large, then we will change 
@@ -63,23 +69,12 @@ void loop() {
   if (abs(SpinWheel.gz) > 1)  {
     blue = 255;
   }
-// Finally, we check to see if the rotation in
-// all directions is small enough. We do this by 
-// adding the rotational components in each of the 
-// directions. If this condition is true, then
-// turn the big LEDs off.
-  if ((abs(SpinWheel.gx)+abs(SpinWheel.gy)+abs(SpinWheel.gz)) < 1) {
-    red = 0;
-    green = 0;
-    blue = 0;
-  }
 
 // Here, we will use the `setLargeLEDsUniform` and 
 // `setSmallLEDsUniform` function to tell the  
 // SpinWheel what color to display. 
   SpinWheel.setLargeLEDsUniform(red, green, blue);
   SpinWheel.setSmallLEDsUniform(red, green, blue);
-
 
   SpinWheel.drawFrame();
  }
