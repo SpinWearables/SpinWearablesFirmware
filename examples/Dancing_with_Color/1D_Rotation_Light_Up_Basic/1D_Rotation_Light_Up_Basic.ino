@@ -20,12 +20,6 @@ void setup() {
 // Instructions in a loop function are repeated over and over again, 
 // in other words, "in a loop".
 void loop() {
-// Here we get to the code specific to this example.
-// First we will initialize a variable which stores 
-// a number that tells the SpinWheel what color to display. . 
-// In the code below we will choose this color based on the 
-// motion of the SpinWheel itself. 
-  
  
 
 // The `readIMU` function checks if the sensor is ready
