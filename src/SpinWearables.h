@@ -397,7 +397,7 @@ class SpinWheelClass {
       setSmallLEDsPointer(angle, decay, rgb>>16, rgb>>8, rgb);
     }
 
-    void setSmallLEDsPointer(uint8_t angle, int64_t decay, uint8_t r, uint8_t g, uint8_t b) {
+    void setSmallLEDsPointer(uint8_t angle, uint8_t r, uint8_t g, uint8_t b) {
       setSmallLEDsPointer(angle, 500, r, g, b);
     }
 
