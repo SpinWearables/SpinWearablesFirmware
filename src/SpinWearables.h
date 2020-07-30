@@ -458,14 +458,6 @@ void smallWhiteRotating() {
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
-// #### Snake
-// Create a rotating pattern similar to a snake on the small LEDs 
-// with a color given by (r, g, b).
-void snake(uint8_t r, uint8_t g, uint8_t b) {
-   uint8_t angle = (millis()>>4)&0xff;
-   SpinWheel.setSmallLEDsPointer(angle, 500, r, g, b);
-}
-
 // #### Breathing
 // A pulsing pattern on all of the LEDs.
 void allBreathing() {
