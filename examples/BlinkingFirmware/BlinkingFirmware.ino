@@ -1,6 +1,6 @@
 /// # A Simple Example Sketch for the SpinWheel
 ///
-/// Part of the [Quick Start](https://spinwearables.com/quickstart/)
+/// Part of the [Initial Setup](https://spinwearables.com/quickstart/)
 //
 
 // These few lines instruct the software to preload
