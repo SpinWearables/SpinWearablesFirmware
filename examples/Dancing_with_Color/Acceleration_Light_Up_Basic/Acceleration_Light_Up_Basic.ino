@@ -1,3 +1,10 @@
+/// # Dancing with Color: Color changes based on acceleration of the device.
+///
+/// In this example, we will step through the code used
+/// to make the SpinWheel change color based on the acceleration in 
+/// the x and y direction. For more information and previous examples,
+/// refer to the [dancing companion page](https://spinwearables.com/dancing/).
+//
 
 // The include statement allows this code to use all the information and code in SpinWearables.h
 #include "SpinWearables.h"
