@@ -1,4 +1,5 @@
 /// # Dancing with Color: Create colorful snake that changes with rotation.
+/// For more examples and information, refer to the [dancing companion page](https://spinwearables.com/dancing/).
 //
 
 // These include statements should look familiar!

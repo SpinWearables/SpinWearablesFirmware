@@ -3,7 +3,7 @@
 /// In this example, we will step through the code used
 /// to make the SpinWheel change color based on the direction
 /// of the spin. For more information and previous examples, 
-/// click [here](https://spinwearables.com/dancing/). 
+/// refer to the [dancing companion page](https://spinwearables.com/dancing/). 
 //
 
 // These include statements should look familiar! 

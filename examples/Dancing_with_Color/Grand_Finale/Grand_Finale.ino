@@ -3,7 +3,7 @@
 /// Here we include one final code example. This example is designed
 /// to be more complex than the previous examples and to inspire
 /// future work. For more information and other examples, 
-/// [click here](https://spinwearables.com/dancing/).
+/// refer to the [dancing companion page](https://spinwearables.com/dancing/).
 //
 
 // These include statements should look familiar!

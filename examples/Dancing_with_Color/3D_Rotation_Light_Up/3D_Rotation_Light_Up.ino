@@ -3,7 +3,7 @@
 /// In this example, we will build off of previous examples
 /// in order to code the color LEDs of the SpinWheel in order 
 /// to respond to a 3D rotation. For more information and 
-/// other examples, [click here](https://spinwearables.com/dancing/). 
+/// other examples, refer to the [dancing companion page](https://spinwearables.com/dancing/).
 //
 
 // These include statements should look familiar!
