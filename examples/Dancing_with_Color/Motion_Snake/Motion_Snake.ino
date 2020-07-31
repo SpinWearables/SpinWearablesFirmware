@@ -28,14 +28,15 @@ void loop() {
 // large enough. If the rotation is large enough, then 
 // we will create a snake-like pattern on the device
 // where the motion of the snake is based on the motion 
-// of the device.  We add 5 to have the snake spin
-// at a reasonable speed. You can adjust this number
+// of the device.  We add 20 to have the snake spin
+// quickly. You can adjust this number
 // to change the speed at which the snake rotates.
 // Here we use (0,255,0) to make the 
 // snake green, but you can use any color you like. 
-  if (abs(SpinWheel.gx) >= 1) { 
-     angle = angle + SpinWheel.gx + 5;
-     setSmallLEDsPointer(angle, 0, 255, 0);
+  if (abs(SpinWheel.gx) >= 1) {
+     // add 10 to make it spin at a reasonable speed
+     angle = angle+SpinWheel.gx+20;
+     SpinWheel.setSmallLEDsPointer(angle, 0, 255, 0);
   }
 // Create a pattern on the large LEDs as well. 
   SpinWheel.setLargeLEDsUniform(100, 0, 100);
