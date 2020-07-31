@@ -14,7 +14,9 @@ using namespace SpinWearables;
 void setup() {
   SpinWheel.begin();
 }
-
+// Initialize the angle variable to zero. This will keep
+// track of the Spin Wheel's rotation.
+uint8_t angle = 0; 
 // Instructions in a loop function are repeated over and over again,
 // in other words, "in a loop".
 void loop() {
@@ -24,17 +26,20 @@ void loop() {
 
 // Use an **if statement** to check to see if the rotation is
 // large enough. If the rotation is large enough, then 
-// `SpinWheel.snake()` creates a snake-like pattern 
-// on the device. Here we use (0,255,0) to make the 
+// we will create a snake-like pattern on the device
+// where the motion of the snake is based on the motion 
+// of the device.  We add 5 to have the snake spin
+// at a reasonable speed. You can adjust this number
+// to change the speed at which the snake rotates.
+// Here we use (0,255,0) to make the 
 // snake green, but you can use any color you like. 
-  if (abs(SpinWheel.gx) > 1) { 
-     SpinWheel.snake(0,255,0);
+  if (abs(SpinWheel.gx) >= 1) { 
+     angle = angle + SpinWheel.gx + 5;
+     setSmallLEDsPointer(angle, 0, 255, 0);
   }
-
-  
-  SpinWheel.setLargeLEDsUniform(100, 0, 0);
-
-  // Make the SpinWheel show the registered color.
+// Create a pattern on the large LEDs as well. 
+  SpinWheel.setLargeLEDsUniform(100, 0, 100);
+// Have the SpinWheel draw the desired pattern.
   SpinWheel.drawFrame();
 }
   
