@@ -358,6 +358,14 @@ class SpinWheelClass {
     void setLargeLED(int i, uint32_t rgb) {
       largeLEDs.setPixelColor(i,rgb);
     }
+
+    void setLargeLEDs(int i, int j, uint8_t r, uint8_t g, uint8_t b) {
+      for (int ii=max(0,i); ii<min(8,j); ii++) setLargeLED(ii,r,g,b);
+    }
+    
+    void setLargeLEDs(int i, int j, uint32_t rgb) {
+      for (int ii=max(0,i); ii<min(8,j); ii++) setLargeLED(ii,rgb);
+    }
     
     void setLargeLEDsUniform(uint8_t r, uint8_t g, uint8_t b) {
       largeLEDs.fill(color(r,g,b), 0, 8);
