@@ -20,12 +20,16 @@ void setup() {
 int r_cum = 0;
 
 void loop() {
-  
   SpinWheel.readIMU();
+
+// Here we measure the rotation around the z-axis.  
   int r = SpinWheel.gz;
-  Serial.println(r);
+// Then we add this value to the sum of the 
+// previous rotations. In the original Rainbow_Chase
+// example, the function millis() provided an  
+// equivalent value for us.
   r_cum = r + r_cum;
-  Serial.println(r_cum);
+
 // We will have some fixed "delay" between the
 // numbers controlling each LED's color.
 // Change this number! What happens?
@@ -39,6 +43,7 @@ void loop() {
   int r2 = (r_cum+2*r_delay) % 250;
   int r3 = (r_cum+3*r_delay) % 250;
 // Here we finally set those colors.
+// Let's first turn on the large LEDs.
   SpinWheel.setLargeLED(0, colorWheel(r0));
   SpinWheel.setLargeLED(1, colorWheel(r1));
   SpinWheel.setLargeLED(2, colorWheel(r2));
@@ -47,7 +52,7 @@ void loop() {
   SpinWheel.setLargeLED(5, colorWheel(r1));
   SpinWheel.setLargeLED(6, colorWheel(r2));
   SpinWheel.setLargeLED(7, colorWheel(r3));
-
+// Now we can turn on the small LEDs.
   SpinWheel.setSmallLED(0, colorWheel(r0));
   SpinWheel.setSmallLED(1, colorWheel(r0));
   SpinWheel.setSmallLED(2, colorWheel(r1));
