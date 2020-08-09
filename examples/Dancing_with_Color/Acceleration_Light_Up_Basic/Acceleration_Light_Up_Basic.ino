@@ -23,10 +23,10 @@ void loop() {
   SpinWheel.readIMU();
 
 // These lines initialize the variables ax and ay, acceleration in the x and y direction.
-//These variables are set equal to the absolute value of the acceleration read by the sensor, times 100. This ensures that ax and ay are always postiive and are on the scale of 100s, so that we can use these numbers to set the LEDs of the SpinWheel. 
+// These variables are set equal to the absolute value of the acceleration read by the sensor, times 100. This ensures that ax and ay are always postiive and are on the scale of 100s, so that we can use these numbers to set the LEDs of the SpinWheel. 
   float ax = abs(SpinWheel.ax)*100;
   float ay = abs(SpinWheel.ay)*100;
-// The setLargeLEDsUniform function sets the color of the large LEDs on the SpinWheel. The number set in ax and ay will d determine the exact color the SpinWheel light up. The color of the SpinWheel will change depending on how much it is accelerating. Try moving the SpinWheel around and see how the color changes.  
+// The setLargeLEDsUniform function sets the color of the large LEDs on the SpinWheel. The number set in ax and ay will determine the exact color the SpinWheel light up. The color of the SpinWheel will change depending on how much it is accelerating. Try moving the SpinWheel around and see how the color changes.  
   SpinWheel.setLargeLEDsUniform(ax, ay, 0);
   SpinWheel.drawFrame();
 }

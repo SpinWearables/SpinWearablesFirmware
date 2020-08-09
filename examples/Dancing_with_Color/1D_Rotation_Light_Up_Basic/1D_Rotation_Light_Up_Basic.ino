@@ -44,7 +44,7 @@ void loop() {
   }
   else {
 // Since no motion has been detected, we will instead use 
-// We will use (0,0,0), which turns off the LEDs.
+// (0,0,0), which turns off the LEDs.
     SpinWheel.setLargeLEDsUniform(0, 0, 0);
   }
 
