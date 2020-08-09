@@ -268,24 +268,15 @@ class SpinWheelClass {
         tmxsmooth = (((int32_t)IMU.agmt.mag.axes.x)*FILTER_A + tmxsmooth*FILTER_B)>>FILTER_DIV;
         tmysmooth = (((int32_t)IMU.agmt.mag.axes.y)*FILTER_A + tmysmooth*FILTER_B)>>FILTER_DIV;
         tmzsmooth = (((int32_t)IMU.agmt.mag.axes.z)*FILTER_A + tmzsmooth*FILTER_B)>>FILTER_DIV;
-        ax_int = taxsmooth>>8;
-        ay_int = taysmooth>>8;
-        az_int = tazsmooth>>8;
-        gx_int = tgxsmooth>>8;
-        gy_int = -tgysmooth>>8;
-        gz_int = -tgzsmooth>>8;
-        mx_int = tmxsmooth>>3;
-        my_int = -tmysmooth>>3;
-        mz_int = -tmzsmooth>>3;
-        ax = taxsmooth / 16384.;
-        ay = taysmooth / 16384.;
-        az = tazsmooth / 16384.;
-        gx = tgxsmooth / 16384.;
-        gy = tgysmooth / 16384.;
-        gz = tgzsmooth / 16384.;
-        mx = tmxsmooth / 16384.;
-        my = tmysmooth / 16384.;
-        mz = tmzsmooth / 16384.;
+        ax =  taxsmooth / 16384.; // Units of 1g because the range is +/-2g at +/-2**15
+        ay = -taysmooth / 16384.;
+        az = -tazsmooth / 16384.;
+        gx =  tgxsmooth / 131.07; // Units of dps because the range is +/-250dps at +/-2**15
+        gy = -tgysmooth / 131.07; // 131.072 = 2**15/250
+        gz = -tgzsmooth / 131.07;
+        mx =  tmxsmooth / 6.6873; // Units of because the range is 4900uT at +/-2**15
+        my =  tmysmooth / 6.6873; // 6.68734 = 2**15/4900
+        mz =  tmzsmooth / 6.6873;
 	
       }
     }
@@ -352,11 +343,11 @@ class SpinWheelClass {
     }
 
     void setLargeLED(int i, uint8_t r, uint8_t g, uint8_t b) {
-      largeLEDs.setPixelColor(i,r,g,b);
+      if (i>=0 and i<8) largeLEDs.setPixelColor(i,r,g,b);
     }
     
     void setLargeLED(int i, uint32_t rgb) {
-      largeLEDs.setPixelColor(i,rgb);
+      if (i>=0 and i<8) largeLEDs.setPixelColor(i,rgb);
     }
 
     void setLargeLEDs(int i, int j, uint8_t r, uint8_t g, uint8_t b) {
