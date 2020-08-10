@@ -1,4 +1,4 @@
-/// # Dancing with Color: Step x, changing color in response to rotation in the z-direction.
+/// # Dancing with Color: Changing color in response to rotation in the x-direction.
 ///
 /// Here we go through in detail how to change the color of the SpinWheel in 
 /// response to the rotation of the device. For more information and other 
