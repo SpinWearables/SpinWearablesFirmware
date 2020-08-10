@@ -36,6 +36,7 @@ void loop() {
 // The `readIMU` function checks if the sensor is ready
 // and takes its current rotation data.
   SpinWheel.readIMU();
+  
 // Here, we will also utilize `else if` 
 // and `else` commands. These commands are used in
 // programming along with an **if statement**
@@ -44,8 +45,8 @@ void loop() {
 // checks whether or not the rotation is big enough in
 // the **positive direction**. If this condition is true
 // we will light up the LEDs according to the given
-// instruction. 
-  if (SpinWheel.gx > 1) {
+// instruction. Feel free to play around with this number.
+  if (SpinWheel.gx > 50) {
     pos_spin = 255;
     neg_spin = 0;
   }
@@ -54,7 +55,7 @@ void loop() {
 // command to see if the spin is large enough 
 // in the **negative direction**. If it is, 
 // then we will follow the given instruction.
-  else if (SpinWheel.gx < -1) {
+  else if (SpinWheel.gx < -50) {
     neg_spin = 255;
     pos_spin = 0;
   }
@@ -72,7 +73,6 @@ void loop() {
 // spinning in the positive direction, the LEDs will light up 
 // green. If the device is spinning in the negative direction
 // the LEDs will light up blue. 
-
   SpinWheel.setLargeLEDsUniform(0, pos_spin, neg_spin);
 
   SpinWheel.drawFrame();

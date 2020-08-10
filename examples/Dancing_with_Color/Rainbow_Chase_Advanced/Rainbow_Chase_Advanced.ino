@@ -15,6 +15,7 @@ using namespace SpinWearables;
 
 void setup() {
   SpinWheel.begin();
+  Serial.begin(115200);
 }
 
 int r_cum = 0;
@@ -22,23 +23,30 @@ int r_cum = 0;
 void loop() {
   SpinWheel.readIMU();
 
-// Here we measure the rotation around the z-axis.  
-  int r = SpinWheel.gz;
-// Then we add this value to the sum of the 
-// previous rotations. In the original Rainbow_Chase
+// Here we measure the rotation around the x-axis.  
+  int r = (SpinWheel.gz);
+  
+// Then if the absolute value of this rotation is big
+// enough, we add 1 to r_cum. In the original Rainbow_Chase
 // example, the function millis() provided an  
-// equivalent value for us.
-  r_cum = r + r_cum;
+// equivalent value for us. This bit of code ensures that 
+// the color of the LEDs only cycles when the device is 
+// moving. You can modify the threshold like in the other
+// sketches for this lesson or change the number
+// being added to r_cum to change how quickly the LEDs 
+// change color.
+  if (abs(r) > 50) {
+    r_cum += 1;
+  }
 
 // We will have some fixed "delay" between the
 // numbers controlling each LED's color.
 // Change this number! What happens?
   int r_delay = 20;
-// We will turn 4 of the LEDs on, but the
+// We will turn all of the LEDs on, but the
 // color of each one of them will be governed by
 // a slightly modified number.
   int r0 = r_cum % 250;
-  Serial.println(r0);
   int r1 = (r_cum+r_delay) % 250;
   int r2 = (r_cum+2*r_delay) % 250;
   int r3 = (r_cum+3*r_delay) % 250;
@@ -57,14 +65,14 @@ void loop() {
   SpinWheel.setSmallLED(1, colorWheel(r0));
   SpinWheel.setSmallLED(2, colorWheel(r1));
   SpinWheel.setSmallLED(3, colorWheel(r1));
-  SpinWheel.setSmallLED(4, colorWheel(r2));
+  SpinWheel.setSmallLED(4, colorWheel(r1));
   SpinWheel.setSmallLED(5, colorWheel(r2));
-  SpinWheel.setSmallLED(6, colorWheel(r3));
-  SpinWheel.setSmallLED(7, colorWheel(r3));
-  SpinWheel.setSmallLED(8, colorWheel(r2));
+  SpinWheel.setSmallLED(6, colorWheel(r2));
+  SpinWheel.setSmallLED(7, colorWheel(r2));
+  SpinWheel.setSmallLED(8, colorWheel(r3));
   SpinWheel.setSmallLED(9, colorWheel(r3));
-  SpinWheel.setSmallLED(10, colorWheel(r3));
-  SpinWheel.setSmallLED(11, colorWheel(r3));
+  SpinWheel.setSmallLED(10, colorWheel(r1));
+  SpinWheel.setSmallLED(11, colorWheel(r0));
 // Draw the image that was prepared in the previous lines.
   SpinWheel.drawFrame();
 }
