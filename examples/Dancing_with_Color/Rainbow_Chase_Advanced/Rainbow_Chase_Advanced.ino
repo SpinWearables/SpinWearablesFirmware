@@ -15,7 +15,6 @@ using namespace SpinWearables;
 
 void setup() {
   SpinWheel.begin();
-  Serial.begin(115200);
 }
 
 int r_cum = 0;

@@ -52,7 +52,7 @@ void loop() {
 // direction. We multiply the acceleration by 10 to have
 // the color change be noticeable. We did a similar thing
 // in the snake example.
-  a_cum = (a)*10 + a_cum;
+  a_cum = a*10 + a_cum;
 // We will have some fixed "delay" between the
 // numbers controlling each LED's color.
 // Change this number! What happens?

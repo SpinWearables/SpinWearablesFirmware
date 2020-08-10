@@ -28,7 +28,7 @@ void loop() {
   SpinWheel.readIMU();
 
 // Below we will use an **if/else statement**.
-// Ife statements are vital tools in programming.
+// "If" statements are vital tools in programming.
 // Essentially, **if** a condition is true, we will 
 // follow the given instruction.  
 // In this case, if the x rotation (gx) is large enough,

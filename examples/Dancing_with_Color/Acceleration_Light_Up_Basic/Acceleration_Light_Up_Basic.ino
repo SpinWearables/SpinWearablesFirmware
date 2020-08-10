@@ -12,7 +12,6 @@ using namespace SpinWearables;
 
 // The Setup function runs one time to make sure the SpinWheel is ready to execute the main code in the loop function
 void setup() {
-  // put your setup code here, to run once:
 // This function makes sure that the LEDs are ready to be lit up
   SpinWheel.begin();
 }
