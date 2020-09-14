@@ -187,7 +187,6 @@ class SpinWheelClass {
 // ### We store various motion sensor readings in these variables.
     ICM_20948_I2C IMU;
     float ax, ay, az, gx, gy, gz, mx, my, mz;
-    int8_t ax_int, ay_int, az_int, gx_int, gy_int, gz_int, mx_int, my_int, mz_int;
     int32_t taxsmooth, taysmooth, tazsmooth, tgxsmooth, tgysmooth, tgzsmooth, tmxsmooth, tmysmooth, tmzsmooth;
 
 // ### And the list of animations and the currently running animation is stored here.
@@ -268,15 +267,15 @@ class SpinWheelClass {
         tmxsmooth = (((int32_t)IMU.agmt.mag.axes.x)*FILTER_A + tmxsmooth*FILTER_B)>>FILTER_DIV;
         tmysmooth = (((int32_t)IMU.agmt.mag.axes.y)*FILTER_A + tmysmooth*FILTER_B)>>FILTER_DIV;
         tmzsmooth = (((int32_t)IMU.agmt.mag.axes.z)*FILTER_A + tmzsmooth*FILTER_B)>>FILTER_DIV;
-        ax =  taxsmooth / 16384.; // Units of 1g because the range is +/-2g at +/-2**15
-        ay = -taysmooth / 16384.;
-        az = -tazsmooth / 16384.;
-        gx =  tgxsmooth / 131.07; // Units of dps because the range is +/-250dps at +/-2**15
-        gy = -tgysmooth / 131.07; // 131.072 = 2**15/250
-        gz = -tgzsmooth / 131.07;
-        mx =  tmxsmooth / 6.6873; // Units of because the range is 4900uT at +/-2**15
-        my =  tmysmooth / 6.6873; // 6.68734 = 2**15/4900
-        mz =  tmzsmooth / 6.6873;
+        ax = -taxsmooth / 16384.; // Units of 1g because the range is +/-2g at +/-2**15
+        ay =  taysmooth / 16384.;
+        az =  tazsmooth / 16384.;
+        gx = -tgxsmooth / 131.07; // Units of dps because the range is +/-250dps at +/-2**15
+        gy =  tgysmooth / 131.07; // 131.072 = 2**15/250
+        gz =  tgzsmooth / 131.07;
+        mx = -tmxsmooth / 6.6873; // Units of because the range is 4900uT at +/-2**15
+        my = -tmysmooth / 6.6873; // 6.68734 = 2**15/4900
+        mz = -tmzsmooth / 6.6873;
 	
       }
     }
@@ -493,20 +492,20 @@ void allBreathing() {
 // The large LEDs are used as a tilt sensor.
 // <video src="./preloaded_tilt.mp4" muted="" autoplay="" playsinline="" loop=""></video>
 void tiltSensor() {
-  int8_t x = SpinWheel.ax_int;  
-  int8_t y = SpinWheel.ay_int;
+  int x = SpinWheel.ax*255;
+  int y = SpinWheel.ay*255;
   SpinWheel.clearLargeLEDs();
   if (x>0) SpinWheel.largeLEDs.setPixelColor(7,x,0,x);
   else SpinWheel.largeLEDs.setPixelColor(5,-x,0,-x);
-  if (y>0) SpinWheel.largeLEDs.setPixelColor(4,y,0,y);
-  else SpinWheel.largeLEDs.setPixelColor(6,-y,0,-y);
+  if (y>0) SpinWheel.largeLEDs.setPixelColor(6,y,0,y);
+  else SpinWheel.largeLEDs.setPixelColor(4,-y,0,-y);
 }
 
 // #### Compass
 // A compass on the small LEDs, while the large LEDs are used as a tilt sensor.
 void compass() {
-  int8_t x = SpinWheel.ax_int;  
-  int8_t y = SpinWheel.ay_int;
+  int x = SpinWheel.ax*255;
+  int y = SpinWheel.ay*255;
   SpinWheel.clearLargeLEDs();
   if (x>10) SpinWheel.largeLEDs.setPixelColor(7,x-8,0,0);
   else if (x<-10) SpinWheel.largeLEDs.setPixelColor(5,-x+8,0,0);
@@ -514,20 +513,20 @@ void compass() {
     SpinWheel.largeLEDs.setPixelColor(1,0,0,32-3*abs(x));
     SpinWheel.largeLEDs.setPixelColor(3,0,0,32-3*abs(x));
   }
-  if (y>10) SpinWheel.largeLEDs.setPixelColor(4,y-8,0,0);
-  else if (y<-10) SpinWheel.largeLEDs.setPixelColor(6,-y+8,0,0);
+  if (y>10) SpinWheel.largeLEDs.setPixelColor(6,y-8,0,0);
+  else if (y<-10) SpinWheel.largeLEDs.setPixelColor(4,-y+8,0,0);
   else {
     SpinWheel.largeLEDs.setPixelColor(0,0,0,32-3*abs(y));
     SpinWheel.largeLEDs.setPixelColor(2,0,0,32-3*abs(y));
   }
-  uint8_t angle = (atan2(SpinWheel.my_int, SpinWheel.mx_int)+3.1415/2)/2/3.1415*255;
+  uint8_t angle = (-atan2(SpinWheel.my, SpinWheel.mx)+3.1415/2)/2/3.1415*255;
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
 // #### Tilt sensor 2
 // The small LEDs are used as a tilt sensor.
 void tiltSensor2() {
-  uint8_t angle = (atan2(SpinWheel.ay_int, SpinWheel.ax_int)+3.1415/2)/2/3.1415*255;
+  uint8_t angle = (-atan2(SpinWheel.ay, SpinWheel.ax)+3.1415/2)/2/3.1415*255;
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
@@ -535,8 +534,8 @@ void tiltSensor2() {
 // Both the large and the small LEDs are used as a tilt sensor.
 // <video src="./preloaded_tilt3.mp4" muted="" autoplay="" playsinline="" loop=""></video>
 void tiltSensor3() {
-  int8_t x = SpinWheel.ax_int;  
-  int8_t y = SpinWheel.ay_int;
+  int x = SpinWheel.ax*255;
+  int y = SpinWheel.ay*255;
   SpinWheel.setLargeLEDsUniform(0xffffff);
   if (x>10) {
     SpinWheel.largeLEDs.setPixelColor(7,x-8,0,x-8);
@@ -547,14 +546,14 @@ void tiltSensor3() {
     SpinWheel.largeLEDs.setPixelColor(1,-x+8,0,-x+8);
   }
   if (y>10) {
-    SpinWheel.largeLEDs.setPixelColor(4,y-8,0,y-8);
-    SpinWheel.largeLEDs.setPixelColor(0,y-8,0,y-8);
+    SpinWheel.largeLEDs.setPixelColor(6,y-8,0,y-8);
+    SpinWheel.largeLEDs.setPixelColor(2,y-8,0,y-8);
   }
   else if (y<-10) {
-    SpinWheel.largeLEDs.setPixelColor(6,-y+8,0,-y+8);
-    SpinWheel.largeLEDs.setPixelColor(2,-y+8,0,-y+8);
+    SpinWheel.largeLEDs.setPixelColor(4,-y+8,0,-y+8);
+    SpinWheel.largeLEDs.setPixelColor(0,-y+8,0,-y+8);
   }
-  uint8_t angle = (atan2(SpinWheel.ay_int, SpinWheel.ax_int)+3.1415/2)/2/3.1415*255;
+  uint8_t angle = (-atan2(SpinWheel.ay, SpinWheel.ax)+3.1415/2)/2/3.1415*255;
   SpinWheel.setSmallLEDsPointer(angle, 500, 0xffffff);
 }
 
