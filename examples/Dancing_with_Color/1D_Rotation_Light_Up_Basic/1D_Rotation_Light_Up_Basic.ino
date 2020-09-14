@@ -34,13 +34,13 @@ void loop() {
 // In this case, if the x rotation (gx) is large enough,
 // then we will change the color of the large LEDS
 // by changing the `spinning` variable. 
-// We picked 50 because that made it turn on without 
-// decting too small motions. However, you can make
-// this more or less sensitve.
+// We picked 100 degrees per second because that made
+// it turn on without decting too small motions.
+// However, you can make this more or less sensitve.
 // The `abs` function makes it so that the direction 
 // of the rotation (clockwise or counter clockwise), 
 // does not matter. 
-  if (abs(SpinWheel.gx) > 50) {
+  if (abs(SpinWheel.gx) > 100) {
 // As before, the `setLargeLEDsUniform` function tells the 
 // SpinWheel to show the color we would like it to show. 
 // We will use (0,255,255), which is a light blue.
