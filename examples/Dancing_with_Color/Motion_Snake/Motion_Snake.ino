@@ -15,6 +15,7 @@ using namespace SpinWearables;
 void setup() {
   SpinWheel.begin();
 }
+
 // Initialize the angle variable to zero. This will keep
 // track of the Spin Wheel's rotation.
 int angle = 0; 
@@ -29,8 +30,12 @@ void loop() {
 // large enough. If the rotation is large enough, then 
 // we will create a snake-like pattern on the device
 // where the motion of the snake is based on the motion 
-// of the device.  
-  if (abs(SpinWheel.gx) > 50) {
+// of the device. Experiment with changing the `100` threshold
+// value if you want to make the SpinWheel more or less
+// sensitive. Keep in mind that `gy` measures rotation around
+// the y axis, i.e. spinning in place while hanging the SpinWheel
+// by the keyring.
+  if (abs(SpinWheel.gy) > 100) {
      // Add 10 to make it spin at a reasonable speed.
      // Experiment with this number to change the rate
      // with which the snake spins. Can you make the 
