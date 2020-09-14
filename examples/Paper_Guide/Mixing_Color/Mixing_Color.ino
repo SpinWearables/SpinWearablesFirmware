@@ -1,5 +1,5 @@
- #include "SpinWearables.h"
- using namespace SpinWearables;
+#include "SpinWearables.h"
+using namespace SpinWearables;
 
 void setup() {
   SpinWheel.begin();
