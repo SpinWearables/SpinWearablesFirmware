@@ -49,7 +49,7 @@ void loop() {
 // the value of the `red` variable. Later, this
 // will be used to turn red component of **each** 
 // LED on. 
-  if (abs(SpinWheel.gx) > 50) {
+  if (abs(SpinWheel.gx) > 100) {
     red = 255;
   }
 
@@ -58,7 +58,7 @@ void loop() {
 // change the value of the `green` variable.
 // Later this will be use to turn the
 // green component of **each** LED on.
-  if (abs(SpinWheel.gy) > 50) {
+  if (abs(SpinWheel.gy) > 100) {
     green = 255;
   }
 
@@ -66,7 +66,7 @@ void loop() {
 // is large, then  we will change the value of the
 // `blue` variable. Later this will be used to turn 
 // the blue component of **each** LED on. 
-  if (abs(SpinWheel.gz) > 50)  {
+  if (abs(SpinWheel.gz) > 100)  {
     blue = 255;
   }
 
