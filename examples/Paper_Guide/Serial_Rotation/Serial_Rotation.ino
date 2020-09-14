@@ -17,7 +17,9 @@ void loop() {
  // The message will just be the value of the SpinWheel's
  // rotation around the x-axis.
  Serial.println(SpinWheel.gx);
- // Wait for 500 milliseconds (half a second) before you 
- // start the loop function again.
- delay(500); 
+ // Wait for 20 milliseconds (i.e. repeat 50 times a second)
+ // before you start the loop function again.
+ // This value might be different in some of our paper educational materials.
+ // Changing it simply makes the sensor more or less responsive.
+ delay(20); 
 }
