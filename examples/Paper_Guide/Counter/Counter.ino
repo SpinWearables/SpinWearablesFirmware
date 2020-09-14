@@ -1,5 +1,5 @@
 // Here we define a convenient pausing function
-// that waits a given number of seconds
+// that waits a given number of seconds.
 void delay_seconds(int number_of_seconds) {
   int number_of_milliseconds = 1000 * number_of_seconds;
   delay(number_of_milliseconds);
