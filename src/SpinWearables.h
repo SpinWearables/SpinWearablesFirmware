@@ -306,12 +306,14 @@ class SpinWheelClass {
     }
     
     void setSmallLED(int i, uint8_t r, uint8_t g, uint8_t b) {
+      if (i<0 || i>11) return;
       smallLEDs[i*3] = r;
       smallLEDs[i*3+1] = g;
       smallLEDs[i*3+2] = b;  
     }
     
     void setSmallLED(int i, uint32_t rgb) {
+      if (i<0 || i>11) return;
       smallLEDs[i*3] = rgb>>16;
       smallLEDs[i*3+1] = rgb>>8;
       smallLEDs[i*3+2] = rgb;  
